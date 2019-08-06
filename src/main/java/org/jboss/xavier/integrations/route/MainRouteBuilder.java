@@ -224,8 +224,12 @@ public class MainRouteBuilder extends RouteBuilder {
     }
 
     private boolean isZipContentType(Exchange exchange) {
+        // TODO fix this with a better implementation or remove the content type check
+        return true;
+/*
         String mimetype = exchange.getMessage().getHeader(CustomizedMultipartDataFormat.CONTENT_TYPE).toString();
         return "application/zip".equalsIgnoreCase(mimetype) || "application/gzip".equalsIgnoreCase(mimetype) || "application/tar+gz".equalsIgnoreCase(mimetype);
+*/
     }
 
     private Processor processMultipart() {
