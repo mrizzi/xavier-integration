@@ -48,7 +48,9 @@ public class VMWorkloadInventoryCalculator extends AbstractVMWorkloadInventoryCa
         model.setProvider(readValueFromExpandedEnvVarPath(PROVIDERPATH, vmStructMap));
 
         vmStructMap.put("vmEmsCluster", readValueFromExpandedEnvVarPath(VMEMSCLUSTERPATH, vmStructMap));
+        System.out.println("vmEmsCluster " + vmStructMap.get("vmEmsCluster"));
         vmStructMap.put("ems_cluster_id", readValueFromExpandedEnvVarPath(EMSCLUSTERIDPATH, vmStructMap));
+        System.out.println("ems_cluster_id " + vmStructMap.get("ems_cluster_id"));
         model.setDatacenter(readValueFromExpandedEnvVarPath(DATACENTERPATH, vmStructMap));
 
         model.setCluster(readValueFromExpandedEnvVarPath(CLUSTERPATH, vmStructMap));
