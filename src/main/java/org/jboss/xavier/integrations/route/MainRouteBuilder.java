@@ -183,7 +183,9 @@ public class MainRouteBuilder extends RouteBuilderExceptionHandler {
 
         from("direct:calculate").routeId("calculate")
                 .convertBodyTo(String.class, "UTF-8")
-                .log("convertBodyTo String : ${body}")
+                .log("convertBodyTo String : ${body.substring(0, 10)}")
+                .process(removeBomFromJSONProcessor())
+                .log("convertBodyTo String : ${body.substring(0, 10)}")
                 .multicast().aggregationStrategy(new GroupedBodyAggregationStrategy())
                     .to("direct:calculate-costsavings", "direct:calculate-vmworkloadinventory", "direct:flags-shared-disks")
                 .setBody(e -> e.getIn().getBody(List.class).get(0))
@@ -249,6 +251,17 @@ public class MainRouteBuilder extends RouteBuilderExceptionHandler {
         JsonNode internalNode = node.get("identity").get("internal");
         internalNode.fieldNames().forEachRemaining(field -> header.put(field, internalNode.get(field).asText()));
         return header;
+    }
+
+    private Processor removeBomFromJSONProcessor() {
+        return exchange -> {
+            String content = exchange.getIn().getBody(String.class);
+            // is '{' char ALWAYS the marker of the beginning of a JSON file?
+            int startPosXml = content.indexOf("{");
+            if (startPosXml >= 0) {
+                exchange.getIn().setBody(content.substring(startPosXml));
+            }
+        };
     }
 
     private Processor httpError400() {
