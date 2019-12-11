@@ -182,7 +182,7 @@ public class MainRouteBuilder extends RouteBuilderExceptionHandler {
                 .to("direct:calculate-workloadsummaryreportmodel");
 
         from("direct:calculate").routeId("calculate")
-                .convertBodyTo(String.class, "ISO-8859-1")
+                .convertBodyTo(String.class, "UTF-8")
                 .multicast().aggregationStrategy(new GroupedBodyAggregationStrategy())
                     .to("direct:calculate-costsavings", "direct:calculate-vmworkloadinventory", "direct:flags-shared-disks")
                 .setBody(e -> e.getIn().getBody(List.class).get(0))
